@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEAP単語（401～500）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .fade-in { animation: fadeIn 0.2s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        #toast {
+            transition: opacity 0.2s ease-out;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800">
+
+    <div id="app" class="max-w-md mx-auto min-h-screen flex flex-col p-4">
+        <!-- Header -->
+        <header class="py-6 text-center">
+            <h1 class="text-3xl font-bold text-indigo-600 mb-1">LEAP単語（401～500）</h1>
+            <p id="sub-header" class="text-slate-400 text-xs font-medium">VOCABULARY TRAINING</p>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="flex-grow flex flex-col">
+            <!-- Content -->
+        </main>
+    </div>
+
+    <!-- Feedback Overlay -->
+    <div id="toast" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-10 py-6 rounded-3xl text-white text-6xl font-black opacity-0 z-50 shadow-2xl"></div>
+
+    <script>
+        const vocabulary = [
+            { en: "debate", ja: "討論" }, { en: "criticize", ja: "～を批判する" }, { en: "accuse", ja: "～を非難する" },
+            { en: "insist", ja: "言い張る" }, { en: "object", ja: "反対する" }, { en: "protest", ja: "抗議する" },
+            { en: "controversial", ja: "論争を招く" }, { en: "bound", ja: "きっと～する" }, { en: "bet", ja: "きっと～だと思う" },
+            { en: "demand", ja: "～を（強く）要求する" }, { en: "desire", ja: "願望" }, { en: "praise", ja: "～を褒める" },
+            { en: "honor", ja: "名誉" }, { en: "chat", ja: "おしゃべりする" }, { en: "refer", ja: "言及する" },
+            { en: "mention", ja: "～について述べる" }, { en: "convey", ja: "～を伝える" }, { en: "demonstrate", ja: "～を（はっきり）示す" },
+            { en: "emphasize", ja: "～を強調する" }, { en: "exaggerate", ja: "～を誇張する" }, { en: "reply", ja: "返事をする" },
+            { en: "respond", ja: "返答する" }, { en: "whisper", ja: "ささやく" }, { en: "remark", ja: "発言" },
+            { en: "observe", ja: "～を観察する" }, { en: "theory", ja: "理論" }, { en: "analysis", ja: "分析" },
+            { en: "phenomenon", ja: "現象" }, { en: "device", ja: "装置" }, { en: "experiment", ja: "実験" },
+            { en: "chemical", ja: "化学物質" }, { en: "fuel", ja: "燃料" }, { en: "nuclear", ja: "原子力の" },
+            { en: "statistics", ja: "統計（値）" }, { en: "pursue", ja: "～を追求する" }, { en: "accomplish", ja: "～をやり遂げる" },
+            { en: "overcome", ja: "～を克服する" }, { en: "fulfill", ja: "果たす" }, { en: "devote", ja: "（A to B）（A）を（Bに）ささげる" },
+            { en: "strive", ja: "努力する" }, { en: "aim", ja: "狙う" }, { en: "challenge", ja: "難問" },
+            { en: "trial", ja: "試み" }, { en: "dizzy", ja: "めまいがして" }, { en: "appetite", ja: "食欲" },
+            { en: "starve", ja: "餓死する" }, { en: "mental", ja: "精神の" }, { en: "rest", ja: "休憩" },
+            { en: "surgery", ja: "手術" }, { en: "disease", ja: "病気" }, { en: "stomachache", ja: "腹痛" },
+            { en: "symptom", ja: "症状" }, { en: "cancer", ja: "がん" }, { en: "ambulance", ja: "救急車" },
+            { en: "recover", ja: "回復する" }, { en: "sore", ja: "痛い" }, { en: "swell", ja: "腫れる" },
+            { en: "cough", ja: "咳をする" }, { en: "bleed", ja: "出血する" }, { en: "faint", ja: "かすかな" },
+            { en: "exhaust", ja: "～を疲れ果てさせる" }, { en: "cure", ja: "～を治療する" }, { en: "disabled", ja: "障がいのある" },
+            { en: "stiff", ja: "凝った" }, { en: "muscle", ja: "筋肉" }, { en: "tongue", ja: "舌" },
+            { en: "sense", ja: "感覚" }, { en: "sweat", ja: "汗" }, { en: "gender", ja: "性" },
+            { en: "nationality", ja: "国籍" }, { en: "citizen", ja: "市民" }, { en: "civil", ja: "市民の" },
+            { en: "racial", ja: "人種の" }, { en: "rural", ja: "田舎の" }, { en: "domestic", ja: "国内の" },
+            { en: "global", ja: "世界的な" }, { en: "suburb", ja: "郊外" }, { en: "border", ja: "国境（地帯）" },
+            { en: "burden", ja: "重荷" }, { en: "impact", ja: "影響" }, { en: "status", ja: "地位" },
+            { en: "equal", ja: "等しい" }, { en: "relationship", ja: "関係" }, { en: "reputation", ja: "評判" },
+            { en: "trend", ja: "風潮" }, { en: "service", ja: "事業" }, { en: "religion", ja: "宗教" },
+            { en: "moral", ja: "道徳的な" }, { en: "standard", ja: "基準" }, { en: "prosperity", ja: "繁栄" },
+            { en: "crisis", ja: "危機" }, { en: "prejudice", ja: "偏見" }, { en: "discrimination", ja: "差別" },
+            { en: "charity", ja: "慈善" }, { en: "benefit", ja: "恩恵" }, { en: "welfare", ja: "福祉" },
+            { en: "community", ja: "社会" }, { en: "individual", ja: "個人" }, { en: "official", ja: "役人" },
+            { en: "immigrant", ja: "移民" }
+        ];
+
+        let state = {
+            screen: 'top',
+            questions: [],
+            currentIdx: 0,
+            answers: []
+        };
+
+        const main = document.getElementById('main-content');
+        const QUESTIONS_PER_SET = 10;
+
+        function render() {
+            main.innerHTML = '';
+            document.getElementById('sub-header').style.display = state.screen === 'top' ? 'block' : 'none';
+
+            switch (state.screen) {
+                case 'top': renderTop(); break;
+                case 'choice': renderChoice(); break;
+                case 'write': renderWrite(); break;
+                case 'result': renderResult(); break;
+                case 'list': renderList(); break;
+            }
+        }
+
+        function showFeedback(text, colorClass) {
+            const toast = document.getElementById('toast');
+            toast.textContent = text;
+            toast.className = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-10 py-6 rounded-3xl text-white text-6xl font-black z-50 shadow-2xl ${colorClass} opacity-100`;
+            
+            setTimeout(() => {
+                toast.classList.replace('opacity-100', 'opacity-0');
+            }, 350);
+        }
+
+        function renderTop() {
+            const div = document.createElement('div');
+            div.className = 'flex flex-col gap-4 mt-10 fade-in';
+            div.innerHTML = `
+                <button onclick="start('choice')" class="bg-indigo-600 text-white py-5 px-6 rounded-2xl font-bold shadow-lg active:scale-95 transition-transform">4択問題</button>
+                <button onclick="start('write')" class="bg-emerald-600 text-white py-5 px-6 rounded-2xl font-bold shadow-lg active:scale-95 transition-transform">記述問題</button>
+                <button onclick="showList()" class="bg-white border-2 border-slate-200 text-slate-500 py-4 px-6 rounded-2xl font-bold mt-4 active:scale-95 transition-transform">単語一覧</button>
+            `;
+            main.appendChild(div);
+        }
+
+        function renderChoice() {
+            const q = state.questions[state.currentIdx];
+            let choices = [q.ja];
+            const others = vocabulary.filter(v => v.ja !== q.ja);
+            while(choices.length < 4) {
+                const r = others[Math.floor(Math.random() * others.length)].ja;
+                if (!choices.includes(r)) choices.push(r);
+            }
+            choices.sort(() => Math.random() - 0.5);
+
+            const div = document.createElement('div');
+            div.className = 'fade-in flex flex-col items-stretch h-full';
+            div.innerHTML = `
+                <div class="mb-4 flex justify-between items-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">${state.currentIdx + 1} / ${QUESTIONS_PER_SET}</span>
+                    <button onclick="forceFinish()" class="text-[10px] font-bold text-rose-400 bg-rose-50 px-3 py-1 rounded-full active:bg-rose-100">中断して結果を表示</button>
+                </div>
+                <div class="bg-white rounded-3xl p-10 mb-6 shadow-sm border border-slate-100 text-center">
+                    <h2 class="text-4xl font-bold text-slate-800 break-words">${q.en}</h2>
+                </div>
+                <div class="grid grid-cols-1 gap-3">
+                    ${choices.map(c => `<button onclick="submitChoice('${c}', ${c === q.ja})" class="bg-white border-2 border-slate-200 p-4 rounded-xl text-lg font-medium hover:border-indigo-400 active:bg-indigo-50 active:scale-95 transition-all text-left pl-6">${c}</button>`).join('')}
+                </div>
+            `;
+            main.appendChild(div);
+        }
+
+        function renderWrite() {
+            const q = state.questions[state.currentIdx];
+            const div = document.createElement('div');
+            div.className = 'fade-in flex flex-col items-stretch h-full';
+            div.innerHTML = `
+                <div class="mb-4 flex justify-between items-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">${state.currentIdx + 1} / ${QUESTIONS_PER_SET}</span>
+                    <button onclick="forceFinish()" class="text-[10px] font-bold text-rose-400 bg-rose-50 px-3 py-1 rounded-full active:bg-rose-100">中断して結果を表示</button>
+                </div>
+                <div class="bg-white rounded-3xl p-10 mb-6 shadow-sm border border-slate-100 text-center">
+                    <h2 class="text-3xl font-bold text-slate-800 break-words">${q.ja}</h2>
+                </div>
+                <input type="text" id="ans-input" autocomplete="off" class="bg-white border-2 border-slate-200 p-5 rounded-xl text-2xl font-mono text-center focus:outline-none focus:border-emerald-500 mb-4 shadow-inner" placeholder="...">
+                <button onclick="checkWrite()" class="bg-emerald-600 text-white py-4 px-6 rounded-2xl font-bold shadow-lg active:scale-95 transition-transform mb-4">決定</button>
+            `;
+            main.appendChild(div);
+            const input = document.getElementById('ans-input');
+            input.focus();
+            input.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkWrite(); });
+        }
+
+        function submitChoice(val, isCorrect) {
+            submit(val, isCorrect);
+        }
+
+        function checkWrite() {
+            const input = document.getElementById('ans-input');
+            const val = input.value.trim().toLowerCase();
+            const q = state.questions[state.currentIdx];
+            submit(val || "(未入力)", val === q.en.toLowerCase());
+        }
+
+        function submit(userVal, isCorrect) {
+            state.answers.push({
+                question: state.questions[state.currentIdx],
+                user: userVal,
+                correct: isCorrect
+            });
+
+            showFeedback(isCorrect ? "○" : "×", isCorrect ? "bg-emerald-500" : "bg-rose-500");
+
+            setTimeout(() => {
+                if (state.currentIdx < QUESTIONS_PER_SET - 1) {
+                    state.currentIdx++;
+                    render();
+                } else {
+                    state.screen = 'result';
+                    render();
+                }
+            }, 450);
+        }
+
+        function forceFinish() {
+            state.screen = 'result';
+            render();
+        }
+
+        function renderResult() {
+            const total = state.answers.length;
+            const correct = state.answers.filter(a => a.correct).length;
+            const div = document.createElement('div');
+            div.className = 'fade-in flex flex-col h-full';
+            div.innerHTML = `
+                <div class="text-center mb-6">
+                    <div class="inline-block px-8 py-4 rounded-3xl bg-indigo-50 mb-2">
+                        <span class="text-5xl font-black text-indigo-600">${correct}</span>
+                        <span class="text-xl font-bold text-indigo-300 ml-1">/ ${total}</span>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-600">トレーニング完了</h2>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-6 flex-grow overflow-y-auto">
+                    ${state.answers.length === 0 ? '<div class="p-10 text-center text-slate-400 text-sm">解答データがありません</div>' : state.answers.map(a => `
+                        <div class="flex items-center justify-between p-4 border-b border-slate-50 last:border-none">
+                            <div class="flex-grow pr-4">
+                                <div class="font-bold text-slate-700 leading-tight">${a.question.en}</div>
+                                <div class="text-slate-400 text-[10px] mt-0.5">${a.question.ja}</div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                ${!a.correct ? `<span class="text-[10px] font-mono text-rose-300 line-through">${a.user}</span>` : ''}
+                                <span class="${a.correct ? 'text-emerald-500 bg-emerald-50' : 'text-rose-500 bg-rose-50'} px-2 py-0.5 rounded text-[10px] font-bold">
+                                    ${a.correct ? 'OK' : 'NG'}
+                                </span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <button onclick="goHome()" class="bg-indigo-600 text-white py-4 px-6 rounded-2xl font-bold shadow-lg active:scale-95 transition-transform">トップへ戻る</button>
+            `;
+            main.appendChild(div);
+        }
+
+        function renderList() {
+            const div = document.createElement('div');
+            div.className = 'fade-in flex flex-col h-full';
+            div.innerHTML = `
+                <div class="flex items-center justify-between mb-4 px-1">
+                    <h2 class="text-lg font-bold text-slate-700">単語一覧 <span class="text-slate-300 text-sm ml-1 font-normal">#401-500</span></h2>
+                    <button onclick="goHome()" class="text-xs text-indigo-600 font-bold border-b border-indigo-200 pb-0.5">戻る</button>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex-grow overflow-y-auto mb-4">
+                    <table class="w-full text-left">
+                        <tbody class="divide-y divide-slate-50">
+                            ${vocabulary.map((v, i) => `
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="pl-4 py-3 text-[10px] text-slate-200 font-mono">${i + 401}</td>
+                                    <td class="px-4 py-3 font-bold text-slate-700 text-sm">${v.en}</td>
+                                    <td class="pr-4 py-3 text-xs text-slate-400">${v.ja}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            main.appendChild(div);
+        }
+
+        function start(mode) {
+            const shuffled = [...vocabulary].sort(() => Math.random() - 0.5);
+            state.questions = shuffled.slice(0, QUESTIONS_PER_SET);
+            state.currentIdx = 0;
+            state.answers = [];
+            state.screen = mode;
+            render();
+        }
+
+        function showList() { state.screen = 'list'; render(); }
+        function goHome() { state.screen = 'top'; render(); }
+
+        window.onload = render;
+    </script>
+</body>
+</html>
+
